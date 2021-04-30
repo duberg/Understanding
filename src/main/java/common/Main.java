@@ -66,7 +66,7 @@ public class Main {
             for (int i = 0; i < columnHeads.length; i++) {
                 spreadsheet.autoSizeColumn(i);
             }
-            FileOutputStream fileOut = new FileOutputStream(new File("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx"));
+            FileOutputStream fileOut = new FileOutputStream(new File("C:\\Users\\46793\\Documents\\TestExcel\\hej.xlsx"));
             workbook.write(fileOut);
             fileOut.close();
             System.out.println("Excel file created");
