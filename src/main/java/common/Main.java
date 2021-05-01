@@ -1,6 +1,8 @@
 package common;
 
+
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -21,13 +23,12 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        disableAccessWarnings();
+        disableWarnings();
         Scanner scan = new Scanner(System.in);
 
         File tempFile = new File("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx");
         boolean exists = tempFile.exists();
         System.out.println(exists);
-
 
 
         if (exists == true) {
@@ -36,66 +37,86 @@ public class Main {
             String excelFilePath = "C:\\Users\\46793\\Documents\\Testea\\hej.xlsx";
             FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet firstSheet = workbook.getSheetAt(0);
-            int rowCount = firstSheet.getLastRowNum();
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet firstSheet = workbook.getSheetAt(0);
 
-            for(int i = 0; rowCount < 2; i++) {
-                Row row = firstSheet.createRow(++rowCount);
-                int columnCount = 0;
-                Cell cell = row.createCell(columnCount);
-                System.out.println("Enter your name:");
-                String name = scan.nextLine();
-                System.out.println("Enter your age");
-                String age2 = scan.nextLine();
-                cell.setCellValue(name);
-                cell = row.createCell(columnCount+1);
-                cell.setCellValue(age2);
-                inputStream.close();
-            }
-
-            FileOutputStream outputStream = new FileOutputStream("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx");
-            workbook.write(outputStream);
-            outputStream.close();
-            System.out.println("hell yeah");
+            DataFormatter formatter = new DataFormatter();
 
 
-        } else if (exists == false) {
-
-                //Workbook
-                XSSFWorkbook workbook = new XSSFWorkbook();
-                XSSFSheet spreadsheet = workbook.createSheet("Hello");
-                String[] columnHeads = {"namn", "age"};
-
-                Row headerRow = spreadsheet.createRow(0);
-
-                for (int i = 0; i < columnHeads.length; i++) {
-                    Cell cell = headerRow.createCell(i);
-                    cell.setCellValue(columnHeads[i]);
-
+                //Byta ut en cell till en annan
+                System.out.println("Vilket namn vill du byta ut?");
+                String searchName = scan.nextLine();
+                System.out.println("Vad vill du ändra det till?");
+                String changeName = scan.nextLine();
+                for (XSSFSheet sheet : workbook) {
+                    for (Row row : sheet) {
+                        for (Cell cell : row) {
+                            if (formatter.formatCellValue(cell).contains(searchName)) {
+                                cell.setCellValue(changeName);
+                            }
+                        }
+                    }
                 }
 
-                String[] storingNames = new String[1];
-                String[] name2 = new String[1];
-                String[] age = new String[1];
-                String[] gender = new String[1];
-                int rownum = 1;
-                for (int i = 0; i < storingNames.length; i++) {
-                    System.out.println("Please enter your name:");
-                    name2[i] = scan.nextLine();
-                    System.out.println("Please enter your age");
-                    age[i] = scan.nextLine();
-                    Row row2 = spreadsheet.createRow(rownum++);
-                    row2.createCell(0).setCellValue(name2[i]);
-                    row2.createCell(1).setCellValue(age[i]);
+                    int rowCount = firstSheet.getLastRowNum();
+
+                    for (int i = 0; rowCount < 5; i++) {
+                        Row row2 = firstSheet.createRow(++rowCount);
+                        int columnCount = 0;
+                        Cell cell2 = row2.createCell(columnCount);
+                        System.out.println("Enter your name:");
+                        String name = scan.nextLine();
+                        System.out.println("Enter your age");
+                        String age2 = scan.nextLine();
+                        cell2.setCellValue(name);
+                        cell2 = row2.createCell(columnCount + 1);
+                        cell2.setCellValue(age2);
+                        inputStream.close();
+                    }
+
+                    FileOutputStream outputStream = new FileOutputStream("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx");
+                    workbook.write(outputStream);
+                    outputStream.close();
+                    System.out.println("hell yeah");
 
 
                 }
-            FileOutputStream outputStream = new FileOutputStream("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx");
-            workbook.write(outputStream);
-            outputStream.close();
-            System.out.println("andra");
-            }
+                if (exists == false) {
+
+                    //Workbook
+                    XSSFWorkbook workbook = new XSSFWorkbook();
+                    XSSFSheet spreadsheet = workbook.createSheet("Hello");
+                    String[] columnHeads = {"namn", "age"};
+
+                    Row headerRow = spreadsheet.createRow(0);
+
+                    for (int i = 0; i < columnHeads.length; i++) {
+                        Cell cell = headerRow.createCell(i);
+                        cell.setCellValue(columnHeads[i]);
+
+                    }
+
+                    String[] storingNames = new String[1];
+                    String[] name2 = new String[1];
+                    String[] age = new String[1];
+                    String[] gender = new String[1];
+                    int rownum = 1;
+                    for (int i = 0; i < storingNames.length; i++) {
+                        System.out.println("Please enter your name:");
+                        name2[i] = scan.nextLine();
+                        System.out.println("Please enter your age");
+                        age[i] = scan.nextLine();
+                        Row row2 = spreadsheet.createRow(rownum++);
+                        row2.createCell(0).setCellValue(name2[i]);
+                        row2.createCell(1).setCellValue(age[i]);
+
+
+                    }
+                    FileOutputStream outputStream = new FileOutputStream("C:\\Users\\46793\\Documents\\Testea\\hej.xlsx");
+                    workbook.write(outputStream);
+                    outputStream.close();
+                    System.out.println("andra");
+                }
 
 
 
@@ -130,21 +151,11 @@ public class Main {
         */
 
 
-
-
-
-
-
-        }
-
-
-
-
-
-
+            }
 
     @SuppressWarnings("unchecked")
-    public static void disableAccessWarnings() {
+    private static void disableWarnings() {
+
         try {
             Class unsafeClass = Class.forName("sun.misc.Unsafe");
             Field field = unsafeClass.getDeclaredField("theUnsafe");
@@ -163,11 +174,9 @@ public class Main {
     }
 
 
+}
 
 
-
-
-    }
 
 
 
