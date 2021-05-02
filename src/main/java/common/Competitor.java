@@ -1,6 +1,6 @@
 package common;
 
-public class Competitor {
+public class Competitor{
 
     String name;
     int age;
