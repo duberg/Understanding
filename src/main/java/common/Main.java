@@ -29,8 +29,10 @@ public class Main {
         int k = 0;
         while (k != 2){
             min.enterWorkbook();
-            System.out.println("go again?");
+            System.out.println("if you'd like to exit type 2 then 'enter'");
+            System.out.println("if you'd like to run the program again, type any digits other than 2 then 'enter'");
             k = intChoice.nextInt();
+            //loopen måste fixas för om man skapar dokument och sen inte går ur programmet och in igen, så förstår inte programmet att excelen redan skapats
         }
         System.out.println("see you next time");
     }

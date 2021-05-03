@@ -63,15 +63,16 @@ public class Workbook {
                 }
 
                 DataFormatter formatter = new DataFormatter();
-                System.out.println("Skriv 1 om du vill ändra något");
+                System.out.println("Type 1 if you'd like to change something then 'enter'");
+                System.out.println("type any other digit to add another contestant, then 'enter'");
                 int choice = intScan.nextInt();
 
                 if (choice == 1) {
 
                     //Byta ut en cell till en annan
-                    System.out.println("Vilket namn vill du byta ut?");
+                    System.out.println("Which name/age would you like to change?");
                     String searchName = scan.nextLine();
-                    System.out.println("Vad vill du ändra det till?");
+                    System.out.println("What do you wanna change it to?");
                     String changeName = scan.nextLine();
                     for (XSSFSheet sheet : workbook) {
                         for (Row row : sheet) {
@@ -87,7 +88,7 @@ public class Workbook {
                         workbook.write(outputStream);
 
                         outputStream.close();
-                        System.out.println("ändrat");
+                        System.out.println("changed");
                     }
                 } else {
 
@@ -101,7 +102,7 @@ public class Workbook {
 
                         Row row2 = firstSheet.createRow(++rowCount);
                         if (rowCount == 5) {
-                            System.out.println("I'm sorry");
+                            System.out.println("I'm sorry, the list is full");
                             k = 3;
                         } else {
                             int columnCount = 0;
@@ -118,7 +119,7 @@ public class Workbook {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("type 3 to exit, or anything else to add another");
+                            System.out.println("type 3 to exit, or type any other digit then 'enter' to add another contestant");
                             k = intScan.nextInt();
                         }
 
@@ -130,7 +131,7 @@ public class Workbook {
 
                     outputStream.close();
 
-                    System.out.println("hell yeah");
+                    System.out.println("Contestant/s added");
 
 
                 }
@@ -140,7 +141,7 @@ public class Workbook {
                 //Workbook
                 XSSFWorkbook workbook = new XSSFWorkbook();
                 XSSFSheet spreadsheet = workbook.createSheet("Hello");
-                String[] columnHeads = {"namn", "age"};
+                String[] columnHeads = {"Name:", "Age:"};
 
                 Row headerRow = spreadsheet.createRow(0);
 
@@ -170,7 +171,7 @@ public class Workbook {
                 workbook.write(outputStream);
                 outputStream.close();
 
-                System.out.println("andra");
+                System.out.println("Created new excel");
             }
 
 
